@@ -57,35 +57,6 @@ namespace MainProject.Controllers
             return Ok(jsonData);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(Insert_Update_EmployeeDto model)
-        {
-            ModelState.Remove("Id");
-            ModelState.Remove("ImagePath");
-
-            if (ModelState.IsValid)
-            {
-                model.Image = Request.Form.Files["ImageData"];
-                if (model.Image != null)
-                    model.ImagePath = helper.UploadImage(model.Image);
-                else
-                    View("create", model);
-
-                Employee employeeData = mapper.Map<Employee>(model);
-                uow.Employees.Add(employeeData);
-                uow.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View();
-
-        }
-
-
+       
     }
 }

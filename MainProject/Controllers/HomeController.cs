@@ -1,16 +1,16 @@
-﻿using MainProject.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
-namespace MainProject.Controllers
+﻿namespace MainProject.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
+        private readonly Helper helper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork uow, IMapper mapper, IOptions<Helper> _helper)
         {
-            _logger = logger;
+            this.uow = uow;
+            this.mapper = mapper;
+            helper = _helper.Value;
         }
 
         public IActionResult Index()
@@ -18,11 +18,5 @@ namespace MainProject.Controllers
             return View();
         }
 
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
