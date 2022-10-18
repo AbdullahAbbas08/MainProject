@@ -1,0 +1,40 @@
+﻿@using DataAccessLayer.Models
+@model Employee
+
+@{
+    ViewBag.Title = "Create";
+}
+<h1>@ViewBag.Title Client</h1>
+
+@using (Html.BeginForm("Create","Home", FormMethod.Post, new { enctype ="multipart/form-data" }))  
+{
+
+    <div asp-validation-summary=All></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 p-3">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" autocomplete="off" />
+            </div>
+            <div class="col-12 p-3">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" autocomplete="off" />
+            </div>
+            <div class="col-12 p-3">
+                <label asp-for="Salay" class="control-label"></label>
+                <input asp-for="Salay" class="form-control" autocomplete="off" />
+            </div>
+           
+            <div class="col-12 p-3">
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" name="ImageData" id="ImageData" onchange="fileCheck(this);" class="form-control" />
+            </div>
+            <div class="col-12 p-3">
+                <input type="submit" class="btn btn-outline-primary" value="Save" />
+                <a asp-action="Index" class="btn-primary btn-secondary"></a>
+            </div>
+
+        </div>
+    </div>
+}
