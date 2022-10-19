@@ -28,12 +28,12 @@
             
             <div class="col-12 p-3">
            <label asp-for="Managers" class="control-label"></label>
-            @Html.DropDownList("a",new SelectList(Model.Managers,"Value","Text"),"Select Manager", new { @class = "form-control" })
+            @Html.DropDownList("m=>m.Employee.ManagerId",new SelectList(Model.Managers,"Value","Text"),"Select Manager", new { @class = "form-control" })
             </div>
             
             <div class="col-12 p-3">
            <label asp-for="Department" class="control-label"></label>
-            @Html.DropDownList("b",new SelectList(Model.Department,"Value","Text"),"Select Department", new { @class = "form-control" })
+            @Html.DropDownList("m=>m.Employee.DepartmentId",new SelectList(Model.Department,"Value","Text"),"Select Department", new { @class = "form-control" })
             </div>
 
 
