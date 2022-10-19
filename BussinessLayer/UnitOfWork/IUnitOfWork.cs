@@ -1,6 +1,7 @@
 ﻿using BussinessLayer.Repository;
 using DataAccessLayer.DbContext;
 using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,16 @@ namespace BussinessLayer.UnitOfWork
         IEmployeeRepository Employees { get; }
         ITasksRepository Tasks { get; }
         int SaveChanges();
+        string WebRootPath { get; }
     }
 
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DataBaseContext DataBaseContext;
-
-        public UnitOfWork(DataBaseContext _DataBaseContext) 
+        private readonly string webRootPath;
+        public UnitOfWork(DataBaseContext _DataBaseContext, IHostingEnvironment hostEnvironment) 
         { DataBaseContext = _DataBaseContext;
+            this.webRootPath = hostEnvironment.WebRootPath;
         }
 
 
@@ -67,6 +70,9 @@ namespace BussinessLayer.UnitOfWork
         {
             return DataBaseContext.SaveChanges();
         }
+
+        public string WebRootPath => this.webRootPath;
+
 
     }
 

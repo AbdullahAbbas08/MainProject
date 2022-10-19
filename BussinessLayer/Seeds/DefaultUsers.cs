@@ -41,7 +41,7 @@ namespace BussinessLayer.Seeds
                 LastName ="Abdullah",
                 Salay=2000,
                 ImagePath ="456",
-                ManagerId = "c64cc7ed-dee0-490f-8f3c-01bd0928b458"
+                //ManagerId = "c64cc7ed-dee0-490f-8f3c-01bd0928b458"
             };
 
             var _Manager = await UserManager.FindByNameAsync(Manager.UserName);
@@ -64,7 +64,7 @@ namespace BussinessLayer.Seeds
                 LastName ="Abdullah",
                 Salay=3000,
                 ImagePath ="789",
-                ManagerId = "0b94684d-618e-42f5-9416-93b8a83dd7ee"
+                //ManagerId = "0b94684d-618e-42f5-9416-93b8a83dd7ee"
             };
 
             var _Employee = await UserManager.FindByNameAsync(Employee.UserName);

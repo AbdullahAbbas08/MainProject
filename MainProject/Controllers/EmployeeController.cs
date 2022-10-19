@@ -33,6 +33,7 @@ namespace MainProject.Controllers
 
         [HttpPost]
         public IActionResult Create(CreateEmployeesDropdowns model)
+        
         {
             CreateEmployeesDropdowns dropdowns = new();
             dropdowns.Managers = uow.Employees.GetManagersSelectItems();

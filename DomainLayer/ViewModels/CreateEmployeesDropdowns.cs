@@ -18,6 +18,8 @@ namespace DomainLayer.ViewModels
         }
         public List<SelectListItem> Managers { get; set; }
         public List<SelectListItem> Department { get; set; }
-        public Insert_Update_EmployeeDto Employee { get; set; } 
+        public Insert_Update_EmployeeDto Employee { get; set; }
+        public string DepartmentID { get; set; }
+        public string ManagerID { get; set; }
     }
 }
