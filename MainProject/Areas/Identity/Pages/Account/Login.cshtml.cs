@@ -22,11 +22,14 @@ namespace MainProject.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<AppUser> userManager1;
 
-        public LoginModel(SignInManager<AppUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<AppUser> signInManager, 
+            ILogger<LoginModel> logger,UserManager<AppUser> userManager1)
         {
             _signInManager = signInManager;
             _logger = logger;
+            this.userManager1 = userManager1;
         }
 
         /// <summary>
@@ -66,7 +69,7 @@ namespace MainProject.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
+            [Display(Name ="Email Or UserName")]
             public string Email { get; set; }
 
             /// <summary>
@@ -108,6 +111,9 @@ namespace MainProject.Areas.Identity.Pages.Account
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
+            var username = new EmailAddressAttribute().IsValid(Input.Email)?
+                userManager1.FindByEmailAsync(Input.Email).Result.UserName
+                : Input.Email;
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout

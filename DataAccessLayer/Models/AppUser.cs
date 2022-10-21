@@ -22,7 +22,7 @@ namespace DataAccessLayer.Models
         {
             get
             {
-                return FirstName + " " + LastName;
+                return FirstName + "_" + LastName;
             }
         }
 

@@ -32,9 +32,6 @@ namespace MainProject.ApiController
 
             IQueryable<Department> Departments = uow.Departments.Query(m => string.IsNullOrEmpty(searchValue) ? true
                 : ( m.Name.Contains(searchValue) ));
-
-            //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-            //    User = User.OrderBy(string.Concat(sortColumn, " ", sortColumnDirection));
             var res = uow.Departments.DbSet.Include(s => s.Employees).Where(m=> string.IsNullOrEmpty(searchValue) ? true
                 : (m.Name.Contains(searchValue))); 
 

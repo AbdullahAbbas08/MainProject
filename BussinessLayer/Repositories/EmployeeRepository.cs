@@ -183,11 +183,15 @@ namespace BussinessLayer.Repository
         
         public void Delete(string id)
         {
+            var manager = uow.Employees.FirstOrDefault(x => x.ManagerId == id); 
+            if(manager == null)
+            {
             var Employee = uow.Employees.FirstOrDefault(x => x.Id == id);
             if (Employee != null)
             {
                 uow.Employees.Remove(Employee);
                 uow.SaveChanges();
+            }
             }
         }
 
@@ -199,7 +203,8 @@ namespace BussinessLayer.Repository
             Employee employeeData = uow.Mapper.Map<Employee>(model.Employee);
             employeeData.Id = Guid.NewGuid().ToString();
             employeeData.DepartmentId =int.Parse(model.DepartmentId);
-            employeeData.ManagerId = model.ManagerId;
+            employeeData.ManagerId = model.ManagerId=="0"?null: model.ManagerId;
+            employeeData.UserName = employeeData.FullName;
             uow.Employees.Add(employeeData);
             uow.SaveChanges();
         }

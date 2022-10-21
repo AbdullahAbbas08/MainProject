@@ -39,7 +39,7 @@ namespace MainProject.Controllers
             {
                 model.Employee.Image = Request.Form.Files["ImageData"];
                 uow.Employees.Create(model);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Home");
             }
             CreateEmployeesDropdowns dropdowns = uow.Employees.InitViewModel();
             dropdowns.Employee = model.Employee;
@@ -84,7 +84,7 @@ namespace MainProject.Controllers
             {
                 model.Employee.Image = Request.Form.Files["ImageData"];
                 uow.Employees.Edit(model);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -97,16 +97,9 @@ namespace MainProject.Controllers
 
         public ActionResult Delete(string id)
         {
-            try
-            {
-                uow.Employees.Delete(id);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                return Json("error");
-            }
 
+                uow.Employees.Delete(id);
+                return RedirectToAction("Index", "Home");
         }
 
 
