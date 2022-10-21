@@ -33,11 +33,17 @@ namespace DataAccessLayer.Models
 
         [NotMapped]
         public TaskState SelectedTaskStatus { get; set; }
+        
+        [NotMapped]
+        public int SelectedTaskId { get; set; }
         [NotMapped]
         public List<SelectListItem> TaskStatus { get; set; }
 
         [NotMapped]
         public List<SelectListItem> TasksDropDown { get; set; } = new List<SelectListItem>();
+        
+        [NotMapped]
+        public List<SelectListItem> AllTasksDropDown { get; set; } = new List<SelectListItem>();  
 
         [NotMapped]
         public int EmpTaskId { get; set; }

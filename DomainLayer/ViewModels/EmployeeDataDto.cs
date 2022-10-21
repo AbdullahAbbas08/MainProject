@@ -45,6 +45,6 @@ namespace DomainLayer.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public int EmployeeCount { get; set; }
-        public int SumSalary { get; set; }
+        public decimal SumSalary { get; set; }
     }
 }

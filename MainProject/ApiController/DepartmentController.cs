@@ -19,7 +19,7 @@ namespace MainProject.ApiController
         }
        
         [HttpPost]
-        public IActionResult GetDeparment() 
+        public IActionResult GetDeparments()  
         {
             var pageSize = int.Parse(Request.Form["length"]);
             var skip = int.Parse(Request.Form["start"]);
@@ -29,27 +29,29 @@ namespace MainProject.ApiController
             var sortColumn = Request.Form[string.Concat("columns[", Request.Form["order[0][column]"], "][name]")];
             var sortColumnDirection = Request.Form["order[0][dir]"];
 
-            //IQueryable<DepartmentDto> User = uow.Employees.Query(m => string.IsNullOrEmpty(searchValue) ? true
-            //    : (
-            //        m.FirstName.Contains(searchValue) ||
-            //        m.LastName.Contains(searchValue) ||
-            //        m.Manager.FirstName.Contains(searchValue) ||
-            //        m.Manager.Salay.ToString().Contains(searchValue) ||
-            //        m.Manager.LastName.Contains(searchValue)
-            //       ));
+            IQueryable<Department> Departments = uow.Departments.Query(m => string.IsNullOrEmpty(searchValue) ? true
+                : ( m.Name.Contains(searchValue) ));
 
             //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
             //    User = User.OrderBy(string.Concat(sortColumn, " ", sortColumnDirection));
+            var emplyees = uow.Employees.DbSet;
+            var query = (from emp in emplyees
+                        join dept in Departments
+                        on emp.DepartmentId equals dept.Id
+                        group dept by new {dept.Id,emp.Salay} 
+                        into g
+                        select new DepartmentDto
+                        {
+                            Id = g.Key.Id,
+                            EmployeeCount = g.Count(),
+                            Name = g.FirstOrDefault().Name,
+                            SumSalary = g.Key.Salay
+                        }).ToList();
+            var data = query.Skip(skip).Take(pageSize).ToList();
+            var recordsTotal = Departments.Count();
+            var jsonData = new { recordsFiltered = recordsTotal, recordsTotal, data };
 
-            //var QueryResult = User.Skip(skip).Take(pageSize).ToList();
-            //var data = mapper.Map<List<EmployeeDataDto>>(QueryResult);
-
-            //var recordsTotal = User.Count();
-
-            //var jsonData = new { recordsFiltered = recordsTotal, recordsTotal, data };
-
-            //return Ok(jsonData);
-            return Ok();
+            return Ok(jsonData);
         }
     }
 }

@@ -26,7 +26,8 @@ namespace BussinessLayer.Repository
         void Delete(string id);
 
         Employee GetEmployee(string id); 
-        void ChangeTaskStatus(int taskid, TaskState status ); 
+        void ChangeTaskStatus(int taskid, TaskState status );
+        public void AssignTask(string empid, int taskid);
     }
 
     public class EmployeeRepository : Repository<Employee>, IEmployeeRepository
@@ -228,6 +229,13 @@ namespace BussinessLayer.Repository
             {
                 returnedEmployee.TasksDropDown.Add(new SelectListItem { Text = item.Title,Value=item.EmployeeTaskId.ToString()});
             }
+
+            var selectedemptask = employeeTasks.Where(x => x.EmployeeId == userId).Select(x=>x.TaskId).ToList();
+            var notSelectedTask = tasks.Where(x => !selectedemptask.Contains(x.Id));
+            foreach (var item in notSelectedTask)
+            {
+                returnedEmployee.AllTasksDropDown.Add(new SelectListItem { Text = item.Title,Value=item.Id.ToString()});
+            }
             return returnedEmployee;
         }
 
@@ -238,6 +246,18 @@ namespace BussinessLayer.Repository
             res.Status = status;
             dbContext.SaveChanges();
         }
+        
+        public void AssignTask(string empid ,int taskid)
+        {
+
+             dbContext.EmployeeTasks.Add(new EmployeeTask
+            {
+                EmployeeId = empid,
+                TaskId = taskid ,
+                Status = TaskState.New
+            });
+            dbContext.SaveChanges();
+        }
     }
-    
+     
 }

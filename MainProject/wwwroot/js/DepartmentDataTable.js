@@ -4,7 +4,7 @@
         "serverSide": true,
         "filter": true,
         "ajax": {
-            "url": "/api/User",
+            "url": "/api/Department",
             "type": "POST",
             "datatype": "json"
         },
@@ -15,32 +15,9 @@
         }],
         "columns": [
             { "data": "id"          , "name": "Id"          , "autowidth": true },
-            { "data": "firstName", "name": "FirstName"   , "autowidth": true },
-            { "data": "lastName", "name": "LastName"    , "autowidth": true },
-            { "data": "fullName", "name": "FullName"     , "autowidth": true },
-            { "data": "salay", "name": "Salay"       , "autowidth": true },
-            { "data": "managerFullName", "name": "managerFullName"       , "autowidth": true },
-            {
-                "data": "id",
-                "name": "Id",
-                render: function (data, type, row) {
-                    return '<a href="javascript:" onclick="OpenImage(\'/images/' + row.imagePath + '\');"><img style="width:100px;" src="/images/' + row.imagePath + '" /></a>';
-                },
-                "orderable": false
-            },
-            {
-                "render": function (data, type, row)
-                {
-                    return `<div class="d-flex justify-content-center"> <a class="btn btn-danger mx-2" onclick="location.href='/Employee/Delete/${row.id}'"; ><i class="fa-solid fa-trash"></i> </a > <a  onclick="location.href='/Employee/Edit/${row.id}'"; class="btn btn-primary mx-2"> <i class="fa-solid fa-pen-to-square"></i> </a ></div>`
-                },
-                "orderable": false
-            },
-
+            { "data": "name", "name": "Name"   , "autowidth": true },
+            { "data": "employeeCount", "name": "EmployeeCount"    , "autowidth": true },
+            { "data": "totalSalaies", "name": "TotalSalaies"     , "autowidth": true },
         ]
     });
 });
-
-function OpenImage(src) {
-    $('#img').attr('src', src)
-    $('#ImageModal').modal('show');
-}

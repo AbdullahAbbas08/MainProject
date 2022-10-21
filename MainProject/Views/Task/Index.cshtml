@@ -1,25 +1,25 @@
 ﻿@model IEnumerable<DataAccessLayer.Models.Task>
 <h1>Tasks</h1>
 
-<a  asp-controller="Task" asp-action="Create" class="btn btn-primary my-3">Create New </a>
+<a asp-controller="Task" asp-action="Create" class="btn btn-primary my-3">Create New </a>
 
 <table class="table">
     <thead>
-    <tr>
-    @*<th>ID</th>*@
-    <th>Title</th>
-    <th>Description</th>
-    </tr>
+        <tr>
+            @*<th>ID</th>*@
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-    <tr>
-    @*<td> @Html.DisplayFor( itemmode=> item.Id) </td>*@
-    <td> @Html.DisplayFor( itemmode=> item.Title) </td>
-    <td> @Html.DisplayFor( itemmode=> item.Description) </td>
-    </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td> @Html.DisplayFor( itemmode=> item.Id) </td>*@
+                <td> @Html.DisplayFor( itemmode=> item.Title) </td>
+                <td> @Html.DisplayFor( itemmode=> item.Description) </td>
+            </tr>
+        }
     </tbody>
-    </table>
+</table>
 

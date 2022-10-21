@@ -118,10 +118,10 @@ namespace MainProject.Areas.Identity.Pages.Account
                     if (User.IsInRole(Roles.Employee))
                     {
                         _logger.LogInformation("User logged in.");
-                        return LocalRedirect(returnUrl);
+                        return LocalRedirect(Url.Content("~/Employee/Index"));
                     }
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(Url.Content("~/Employee/Index"));
+                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

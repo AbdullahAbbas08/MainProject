@@ -11,9 +11,15 @@ namespace MainProject.Controllers
             this.uow = uow;
         }
 
-        public IActionResult Index()
-        { 
-            return View(uow.Employees.GetEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+        public IActionResult Index(string id)
+        {
+            if(id == null) id= User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View(uow.Employees.GetEmployee(id));
+        }
+        
+        public IActionResult Details(string? id)
+        {
+            return View(uow.Employees.GetEmployee(id));
         }
 
         public IActionResult Create()
@@ -46,6 +52,20 @@ namespace MainProject.Controllers
         { 
             uow.Employees.ChangeTaskStatus(int.Parse(model.EmpTaskId.ToString()), model.SelectedTaskStatus);
             return RedirectToAction("Index");
+        }
+        
+        [HttpPost]
+        public IActionResult ChangeStatusForAdmin(Employee model)  
+        { 
+            uow.Employees.ChangeTaskStatus(int.Parse(model.EmpTaskId.ToString()), model.SelectedTaskStatus);
+            return RedirectToAction("Details", new { id = model.Id });
+        }
+        
+        [HttpPost]
+        public IActionResult Assign(Employee model)  
+        { 
+            uow.Employees.AssignTask(model.Id,model.SelectedTaskId);
+            return RedirectToAction("Details", new { id = model.Id });
         }
 
 
