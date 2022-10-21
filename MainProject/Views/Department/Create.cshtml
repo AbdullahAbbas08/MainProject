@@ -1,0 +1,26 @@
+﻿@using DataAccessLayer.Models
+@model Department
+
+<h1> Departments</h1>
+
+@using (Html.BeginForm("Create", "Department", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div asp-validation-summary=All></div>
+     <input asp-for="Id" value="Id" type="hidden" />
+    <div class="container">
+        <div class="row">
+            <div class="col-12 p-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" autocomplete="off" />
+            </div>
+          
+            <div class="col-12 p-3">
+                <input type="button" value="Back" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Department")'" />
+                <input type="submit" class="btn btn-outline-primary" value="Save" />
+                <a asp-action="Index" class="btn-primary btn-secondary"></a>
+            </div>
+
+        </div>
+    </div>
+}

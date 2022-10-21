@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace MainProject.ApiController
 {
@@ -34,20 +35,25 @@ namespace MainProject.ApiController
 
             //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
             //    User = User.OrderBy(string.Concat(sortColumn, " ", sortColumnDirection));
-            var emplyees = uow.Employees.DbSet;
-            var query = (from emp in emplyees
-                        join dept in Departments
-                        on emp.DepartmentId equals dept.Id
-                        group dept by new {dept.Id,emp.Salay} 
-                        into g
-                        select new DepartmentDto
-                        {
-                            Id = g.Key.Id,
-                            EmployeeCount = g.Count(),
-                            Name = g.FirstOrDefault().Name,
-                            SumSalary = g.Key.Salay
-                        }).ToList();
-            var data = query.Skip(skip).Take(pageSize).ToList();
+            var res = uow.Departments.DbSet.Include(s => s.Employees).Where(m=> string.IsNullOrEmpty(searchValue) ? true
+                : (m.Name.Contains(searchValue))); 
+
+            List<DepartmentDto> deptlist = new List<DepartmentDto>();
+            foreach (var item in res)
+            {
+                var resItem = new DepartmentDto 
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    EmployeeCount = item.Employees.Count(),
+                    SumSalary = item.Employees.Sum(s => s.Salay)
+                };
+                deptlist.Add(resItem);
+            }
+
+
+
+            var data = deptlist.Skip(skip).Take(pageSize).ToList();
             var recordsTotal = Departments.Count();
             var jsonData = new { recordsFiltered = recordsTotal, recordsTotal, data };
 

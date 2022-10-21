@@ -2,13 +2,13 @@
 
 namespace MainProject.Controllers
 {
-    public class DepartmentApiController : Controller
+    public class DepartmentController : Controller 
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         private readonly Helper helper;
 
-        public DepartmentApiController(IUnitOfWork uow,
+        public DepartmentController(IUnitOfWork uow,
                                   IMapper mapper,
                                   IOptions<Helper> _helper) 
         {
@@ -20,7 +20,7 @@ namespace MainProject.Controllers
         public IActionResult Index()
         {
             return View();
-        }
+        } 
 
         public IActionResult Create()
         {
@@ -29,22 +29,42 @@ namespace MainProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string model)
+        public IActionResult Create(Department model)
         {
-
+            ModelState.Remove("Id");
             if (ModelState.IsValid)
             {
-
-                uow.Departments.Add(new Department { Name = model});
-                uow.SaveChanges();
+                uow.Departments.Create(model.Name);  
                 return RedirectToAction("Index");
             }
 
             return View();
         }
 
+        public IActionResult Edit(int ID)
+        {
+            return View(uow.Departments.Edit(ID));
+        }
 
-        [HttpDelete]
+        [HttpPost]
+        public IActionResult Edit(Department model)
+        {
+            //ModelState.Remove("Employee.Id");
+            //ModelState.Remove("Employee.ImagePath");
+            //ModelState.Remove("Employee.Image");
+            if (ModelState.IsValid)
+            {
+                uow.Departments.Edit(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(uow.Departments.Edit(model.Id));
+            }
+        }
+
+
+
         public ActionResult Delete(int id)
         {
             try 
@@ -52,7 +72,7 @@ namespace MainProject.Controllers
                 var obj = uow.Departments.FirstOrDefault(x => x.Id == id); 
                 if (obj != null)
                 {
-                    uow.Departments.Remove(obj);
+                    uow.Departments.Delete(obj.Id); 
                     uow.SaveChanges();
                 }
 

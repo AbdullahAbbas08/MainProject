@@ -79,9 +79,9 @@
                 <div class="modal-body">
                      <input asp-for="Id" value="@Model.Id" type="hidden" />
                     <label>select task</label>
-                    @Html.DropDownListFor(a=>a.EmpTaskId, new SelectList(Model.TasksDropDown,"Value","Text"),"Select Task", new { @class = "form-control" })
+                    @Html.DropDownListFor(a=>a.EmpTaskId, new SelectList(Model.TasksDropDown,"Value","Text"), new { @class = "form-control" })
                     <label asp-for="SelectedTaskStatus" class="control-label"></label>
-                    @Html.DropDownListFor(a=>a.SelectedTaskStatus, new SelectList(Model.TaskStatus,"Value","Text"),"Select Status", new { @class = "form-control" })
+                    @Html.DropDownListFor(a=>a.SelectedTaskStatus, new SelectList(Model.TaskStatus,"Value","Text"), new { @class = "form-control" })
 
 
                 </div>

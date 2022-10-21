@@ -198,6 +198,8 @@ namespace BussinessLayer.Repository
 
             Employee employeeData = uow.Mapper.Map<Employee>(model.Employee);
             employeeData.Id = Guid.NewGuid().ToString();
+            employeeData.DepartmentId =int.Parse(model.DepartmentId);
+            employeeData.ManagerId = model.ManagerId;
             uow.Employees.Add(employeeData);
             uow.SaveChanges();
         }
@@ -241,10 +243,18 @@ namespace BussinessLayer.Repository
 
         public void ChangeTaskStatus(int emptaskid, TaskState status)
         {
+            try
+            {
+                EmployeeTask res = dbContext.EmployeeTasks.Where(x => x.Id == emptaskid).FirstOrDefault();
+                res.Status = status;
+                dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
 
-            EmployeeTask res =  dbContext.EmployeeTasks.Where(x => x.Id == emptaskid).FirstOrDefault();
-            res.Status = status;
-            dbContext.SaveChanges();
+            }
+
+           
         }
         
         public void AssignTask(string empid ,int taskid)

@@ -3,6 +3,10 @@
     [Table(name: "Departments", Schema = "dbo")]
     public class Department
     {
+        public Department()
+        {
+            Employees = new List<Employee>();
+        }
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required(ErrorMessage = "PleaseEnterDepartmentName")]
