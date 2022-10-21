@@ -1,67 +1,94 @@
-﻿
+﻿using System.Security.Claims;
+
 namespace MainProject.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork uow;
-        private readonly IMapper mapper;
-        private readonly Helper helper;
 
-        public EmployeeController(IUnitOfWork uow, 
-                                  IMapper mapper,
-                                  IOptions<Helper> _helper)
+        public EmployeeController(IUnitOfWork uow)
         {
             this.uow = uow;
-            this.mapper = mapper;
-            helper = _helper.Value;
         }
-         
+
         public IActionResult Index()
-        {
-            return View();
+        { 
+            return View(uow.Employees.GetEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
 
         public IActionResult Create()
         {
-
-            CreateEmployeesDropdowns dropdowns = new();
-            dropdowns.Managers = uow.Employees.GetManagersSelectItems();
-            dropdowns.Department = uow.Employees.GetDepartmentSelectItems();
-
-            return View(dropdowns);
+            return View(uow.Employees.InitViewModel());
         }
 
         [HttpPost]
         public IActionResult Create(CreateEmployeesDropdowns model)
-        
         {
-            CreateEmployeesDropdowns dropdowns = new();
-            dropdowns.Managers = uow.Employees.GetManagersSelectItems();
-            dropdowns.Department = uow.Employees.GetDepartmentSelectItems();
-
-            ModelState.Remove("Id");
-            ModelState.Remove("ImagePath");
+           
+            ModelState.Remove("Employee.Id");
+            ModelState.Remove("Employee.ImagePath");
+            ModelState.Remove("Employee.Image");
 
             if (ModelState.IsValid)
             {
                 model.Employee.Image = Request.Form.Files["ImageData"];
-                if (model.Employee.Image != null)
-                    model.Employee.ImagePath = helper.UploadImage(model.Employee.Image);
-                else
-                    View("create", model);
-
-                Employee employeeData = mapper.Map<Employee>(model.Employee);
-                uow.Employees.Add(employeeData);
-                uow.SaveChanges();
+                uow.Employees.Create(model);
                 return RedirectToAction("Index");
             }
-            
+            CreateEmployeesDropdowns dropdowns = uow.Employees.InitViewModel();
+            dropdowns.Employee = model.Employee;
 
             return View(dropdowns);
+        }
+        
+        [HttpPost]
+        public IActionResult ChangeStatus(Employee model) 
+        { 
+            uow.Employees.ChangeTaskStatus(int.Parse(model.EmpTaskId.ToString()), model.SelectedTaskStatus);
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult Edit(string? ID)
+        {
+            return View(uow.Employees.Edit(ID));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CreateEmployeesDropdowns model)
+        {
+            ModelState.Remove("Employee.Id");
+            ModelState.Remove("Employee.ImagePath");
+            ModelState.Remove("Employee.Image");
+            if (ModelState.IsValid)
+            {
+                model.Employee.Image = Request.Form.Files["ImageData"];
+                uow.Employees.Edit(model);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(uow.Employees.Edit(model.Employee.Id));
+            }
+
+            //return View("Create", model.Employee);
+        }
+
+
+        public ActionResult Delete(string id)
+        {
+            try
+            {
+                uow.Employees.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return Json("error");
+            }
 
         }
 
-      
 
     }
 }

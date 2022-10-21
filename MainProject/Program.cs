@@ -4,9 +4,9 @@ using BussinessLayer.Seeds;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DataBaseContextConnection' not found.");
 
-#region Map Classes Into Appsettings
-builder.Services.Configure<Helper>(builder.Configuration.GetSection("PATHS"));
-#endregion
+//#region Map Classes Into Appsettings
+//builder.Services.Configure<Helper>(builder.Configuration.GetSection("PATHS"));
+//#endregion
 
 
 #region Add CORS
@@ -31,6 +31,12 @@ builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddTransient<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddTransient<ITasksRepository, TasksRepository>();
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+    options.SignIn.RequireConfirmedAccount = false;
+});
 #endregion
 
 
@@ -44,7 +50,7 @@ var services = scope.ServiceProvider;
 var userManager = services.GetRequiredService<UserManager<AppUser>>();
 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 await DefaultRoles.SeedRole(roleManager);
-await DefaultUsers.SeedAdminUser(userManager, roleManager);
+//await DefaultUsers.SeedAdminUser(userManager, roleManager);
 #endregion
 
 
@@ -68,7 +74,7 @@ app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 #endregion
 
 
-app.MapControllerRoute(
+app.MapControllerRoute( 
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();

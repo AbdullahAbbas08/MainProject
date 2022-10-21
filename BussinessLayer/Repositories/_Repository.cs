@@ -230,7 +230,8 @@ namespace BussinessLayer.Repository
 
         public virtual Entity Add(Entity entity)
         {
-            return DbSet.Add(entity).Entity;
+             db.Add(entity);
+            return entity;
         }
 
         public virtual IEnumerable<Entity> AddRange(IEnumerable<Entity> entities)
@@ -252,8 +253,8 @@ namespace BussinessLayer.Repository
 
         public virtual Entity Update(Entity entity)
         {
-            DbSet.Update(entity);
-            return entity;
+            var UpdatedEntity = db.Update(entity).Entity;
+            return UpdatedEntity;
         }
 
         public decimal Sum(Func<Entity, decimal> selector)

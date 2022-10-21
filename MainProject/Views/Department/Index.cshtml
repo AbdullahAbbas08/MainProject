@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "LandingPage";
+}
+
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="py-3">
+                Employees Data
+            </h3>
+        </div>
+    </div>
+ <div class="row">
+     <div class="col-12 my-3">
+          <a class="p-3 btn btn-success" 
+             asp-area="" 
+             asp-controller="Employee" 
+             asp-action="Create">
+              <i class="fas fa-plus"></i>
+          </a>
+     </div>
+
+     <div class="col-12 mt-1">
+            <hr />
+        
+    <div  class="mt-5">
+        <table id="DeptDatatable" 
+               class="table table-striped table-bordered dt-responsive nowrap text-center" 
+               width="100%" 
+               cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Full Name</th>
+                    <th>Salary</th>
+                    <th>Manager</th>
+                    <th>image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+     </div>
+ </div>
+</div>
+
+<div class="modal fade" id="promoImageModal" tabindex="-1" role="dialog" aria-labelledby="promoImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="display: inline-block" class="modal-title" id="promoImageModalLabel"><i class="fa fa-bullhorn"></i>Image</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="imgPromo" src="#" style="width:100%;" alt="Promo Images" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mview"></div>
+
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/DepartmentDataTable.js"></script>
+
+}

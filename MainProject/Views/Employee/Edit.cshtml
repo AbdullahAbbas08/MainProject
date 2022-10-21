@@ -1,0 +1,69 @@
+﻿@using DataAccessLayer.Models
+@model CreateEmployeesDropdowns
+
+@{
+    ViewBag.Title = "Edit";
+    var imagePath = "/images/"+@Model.Employee.ImagePath;
+}
+
+
+<h1>@ViewBag.Title Employee</h1>
+
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+   
+
+    <input type="hidden" asp-for="Employee.Id" id="EmployeeId" />
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8">
+            <div class="col-12 p-3">
+                <label asp-for="Employee.FirstName" class="control-label"></label>
+                <input asp-for="Employee.FirstName" class="form-control" autocomplete="off" />
+            </div>
+            <div class="col-12 p-3">
+                <label asp-for="Employee.LastName" class="control-label"></label>
+                <input asp-for="Employee.LastName" class="form-control" autocomplete="off" />
+            </div>
+            <div class="col-12 p-3">
+                <label asp-for="Employee.Salay" class="control-label"></label>
+                <input asp-for="Employee.Salay" class="form-control" autocomplete="off" />
+            </div>
+            
+            <div class="col-12 p-3">
+           <label asp-for="Managers" class="control-label"></label>
+                @Html.DropDownListFor(a=>a.ManagerId,new SelectList(Model.Managers,"Value","Text",Model.Managers.FirstOrDefault(x=>x.Selected == true)), new { @class = "form-control" })
+            </div>
+            
+            <div class="col-12 p-3">
+           <label asp-for="Department" class="control-label"></label>
+                @Html.DropDownListFor(a=>a.DepartmentId,new SelectList(Model.Department,"Value","Text",Model.Department.FirstOrDefault(x=>x.Selected == true)), new { @class = "form-control" })
+            </div>
+    
+
+            <div class="col-12 p-3">
+                <label asp-for="Employee.Image" class="control-label"></label>
+                <input type="file"  name="ImageData" id="flupImage" onchange="ShowImagePreview(this);" class="form-control" />
+            </div>
+            <div class="col-12 p-3">
+                <input type="button" value="Back" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Employee")'" />
+                <input type="submit" class="btn btn-outline-primary" value="Save" />
+
+                <a asp-action="Index" class="btn-primary btn-secondary"></a>
+            </div>
+            </div>
+            <div class="col-12 col-md-4 d-flex align-align-items-center">
+                 <img src=@imagePath id="ImgPrv"  alt="Sample Image" width="300" height="300" />
+            </div>
+        </div>
+    </div>
+     <div asp-validation-summary=All></div>
+}
+
+
+@section Scripts
+{
+     <script src="~/js/DepartmentDataTable.js"></script>
+}

@@ -1,7 +1,10 @@
-﻿using BussinessLayer.Repository;
+﻿using AutoMapper;
+using BussinessLayer.Helpers;
+using BussinessLayer.Repository;
 using DataAccessLayer.DbContext;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +21,23 @@ namespace BussinessLayer.UnitOfWork
         ITasksRepository Tasks { get; }
         int SaveChanges();
         string WebRootPath { get; }
+        IMapper Mapper { get; }
+        Helper helper { get; }
     }
 
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DataBaseContext DataBaseContext;
+        private readonly IMapper mapper;
+        private readonly Helper __helper;
         private readonly string webRootPath;
-        public UnitOfWork(DataBaseContext _DataBaseContext, IHostingEnvironment hostEnvironment) 
+        public UnitOfWork(DataBaseContext _DataBaseContext, 
+                            IHostingEnvironment hostEnvironment, 
+                            IMapper _mapper,
+                            IOptions<Helper> _helper) 
         { DataBaseContext = _DataBaseContext;
+            mapper = _mapper;
+            __helper = _helper.Value;
             this.webRootPath = hostEnvironment.WebRootPath;
         }
 
@@ -72,6 +84,8 @@ namespace BussinessLayer.UnitOfWork
         }
 
         public string WebRootPath => this.webRootPath;
+        public IMapper Mapper => this.mapper;
+        public Helper helper => __helper;
 
 
     }

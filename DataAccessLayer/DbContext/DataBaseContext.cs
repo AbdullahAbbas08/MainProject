@@ -21,6 +21,7 @@ namespace DataAccessLayer.DbContext
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Task> Tasks { get; set; } 
+        public DbSet<EmployeeTask> EmployeeTasks  { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

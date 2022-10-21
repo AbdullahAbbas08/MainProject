@@ -1,4 +1,6 @@
-﻿namespace DataAccessLayer.Models
+﻿using System.Web.Mvc;
+
+namespace DataAccessLayer.Models
 {
     [Table(name: "Employees", Schema = "dbo")]
     public class Employee: AppUser
@@ -26,6 +28,31 @@
         }
         public virtual Department Department { get; set; }
 
-        public virtual List<Task> Tasks { get; set; }
+        [NotMapped]
+        public List<EmployeeTaskDto> Tasks { get; set; }
+
+        [NotMapped]
+        public TaskState SelectedTaskStatus { get; set; }
+        [NotMapped]
+        public List<SelectListItem> TaskStatus { get; set; }
+
+        [NotMapped]
+        public List<SelectListItem> TasksDropDown { get; set; } = new List<SelectListItem>();
+
+        [NotMapped]
+        public int EmpTaskId { get; set; }
+
     }
-}
+
+    public class EmployeeTaskDto
+    {
+
+        public int Id { get; set; }
+        public int EmployeeTaskId { get; set; } 
+        public TaskState Status { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+
+    }
+
+} 

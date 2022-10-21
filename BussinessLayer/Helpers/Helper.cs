@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BussinessLayer.UnitOfWork;
+using Microsoft.AspNetCore.Http;
 
 namespace BussinessLayer.Helpers 
 {
     public  class Helper
     {
-        public string PathImage { get; set; }
+
+        public string PathImage { get; set; } 
         public string LivePathImages { get; set; }
 
         public void LogError(Exception ex)
@@ -48,11 +50,11 @@ namespace BussinessLayer.Helpers
         /// <returns>
         /// unique name of iamge concatenating with extension of image 
         /// </returns>
-        public string UploadImage(IFormFile Image)
+        public string UploadImage(IFormFile Image,string path)
         {
             try
             {
-                var pathToSave = PathImage;
+                var pathToSave = path;
                 if (Image.Length > 0)
                 {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);

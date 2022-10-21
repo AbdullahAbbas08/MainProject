@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using BussinessLayer.Constants;
 using DataAccessLayer.Models;
 using DomainLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace MainProject.Controllers
 {
@@ -27,6 +29,8 @@ namespace MainProject.Controllers
         [HttpPost]
         public IActionResult GetUser()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var pageSize = int.Parse(Request.Form["length"]);
             var skip = int.Parse(Request.Form["start"]);
 
@@ -35,7 +39,7 @@ namespace MainProject.Controllers
             var sortColumn = Request.Form[string.Concat("columns[", Request.Form["order[0][column]"], "][name]")];
             var sortColumnDirection = Request.Form["order[0][dir]"];
 
-            IQueryable<Employee> User = uow.Employees.Query(m => string.IsNullOrEmpty(searchValue) ? true
+            IQueryable<Employee> Employee = uow.Employees.Query(m => string.IsNullOrEmpty(searchValue) ? true
                 : (
                     m.FirstName.Contains(searchValue)        || 
                     m.LastName.Contains(searchValue)         || 
@@ -47,10 +51,22 @@ namespace MainProject.Controllers
             //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
             //    User = User.OrderBy(string.Concat(sortColumn, " ", sortColumnDirection));
 
-            var QueryResult = User.Skip(skip).Take(pageSize).ToList();
+            if (User.IsInRole(Roles.Manager))
+            {
+                Employee = Employee.Where(x => x.ManagerId == userId);
+            }
+            else if (User.IsInRole(Roles.Employee))
+            {
+                Employee = Employee.Where(x => x.Id == userId);
+            }
+
+
+            var QueryResult = Employee.Skip(skip).Take(pageSize).ToList();
+            
+           
             var data = mapper.Map<List<EmployeeDataDto>>(QueryResult);
 
-            var recordsTotal = User.Count();
+            var recordsTotal = Employee.Count();
 
             var jsonData = new { recordsFiltered = recordsTotal, recordsTotal, data };
 

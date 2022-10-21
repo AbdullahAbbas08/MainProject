@@ -15,20 +15,10 @@
         [Required(ErrorMessage = "PleaseEnterTitleOfDescription")]
         [Display(Name = "TaskDescription")]
         public string Description  { get; set; }
-
-
-        public TaskStatus Status { get; set; }
-
-
-        public DateTime? StartDate { get; set; }
-
-
-        public DateTime? EndtDate { get; set; }
-
-        public string EmployeeId { get; set; } 
-
-
-        public virtual Employee Employee { get; set; }
+        //public virtual List<Employee> Employee { get; set; }
 
     }
+
+   
+
 } 

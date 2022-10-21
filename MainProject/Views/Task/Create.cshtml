@@ -1,0 +1,43 @@
+﻿@using DataAccessLayer.Models
+@model CreateTaskDropdowns
+
+@{
+    ViewBag.Title = "Create";
+}
+<h1>@ViewBag.Title Employee</h1>
+
+@using (Html.BeginForm("Create", "Task", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div asp-validation-summary=All></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 p-3">
+                <label asp-for="task.Title" class="control-label"></label>
+                <input asp-for="task.Title" class="form-control" autocomplete="off" />
+            </div>
+            <div class="col-12 p-3">
+                <label asp-for="task.Description" class="control-label"></label>
+                <input asp-for="task.Description" class="form-control" autocomplete="off" />
+            </div>
+            
+          @*  <div class="col-12 p-3">
+           <label asp-for="SelectedTaskStatus" class="control-label"></label>
+                @Html.DropDownListFor(a=>a.SelectedTaskStatus,new SelectList(Model.TaskStatus,"Value","Text"),"Select Task", new { @class = "form-control" })
+            </div>*@
+            
+         @*   <div class="col-12 p-3">
+           <label asp-for="EmployeeId" class="control-label"></label>
+                @Html.DropDownListFor(a=>a.EmployeeId,new SelectList(Model.Employees,"Value","Text"),"Select Employee", new { @class = "form-control" })
+            </div>*@
+    
+            <div class="col-12 p-3">
+                <input type="button" value="Back" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Employee")'" />
+                <input type="submit" class="btn btn-outline-primary" value="Save" />
+                <a asp-action="Index" class="btn-primary btn-secondary"></a>
+            </div>
+
+        </div>
+    </div>
+}
