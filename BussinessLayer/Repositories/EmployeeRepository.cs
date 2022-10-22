@@ -183,6 +183,7 @@ namespace BussinessLayer.Repository
         
         public void Delete(string id)
         {
+            
             var manager = uow.Employees.FirstOrDefault(x => x.ManagerId == id); 
             if(manager == null)
             {
@@ -209,7 +210,8 @@ namespace BussinessLayer.Repository
                     LastName = model.Employee.LastName,
                     Salay = model.Employee.Salay,
                     ImagePath = model.Employee.ImagePath,
-                    ManagerId = model.ManagerId
+                    ManagerId = model.ManagerId,
+                    DepartmentId = int.Parse(model.DepartmentId)
                 };
 
                 var _Manager = await uow.userManager.FindByNameAsync(model.Employee.UserName);
@@ -272,8 +274,12 @@ namespace BussinessLayer.Repository
             try
             {
                 EmployeeTask res = dbContext.EmployeeTasks.Where(x => x.Id == emptaskid).FirstOrDefault();
+                if (res != null)
+                {
+
                 res.Status = status;
                 dbContext.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -285,14 +291,21 @@ namespace BussinessLayer.Repository
         
         public void AssignTask(string empid ,int taskid)
         {
+            var task = dbContext.Tasks.Where(x => x.Id == taskid).FirstOrDefault();
+            var emp = dbContext.Employees.Where(x => x.Id==empid).FirstOrDefault();
 
-             dbContext.EmployeeTasks.Add(new EmployeeTask
+            if(task != null && emp != null)
             {
-                EmployeeId = empid,
-                TaskId = taskid ,
-                Status = TaskState.New
-            });
-            dbContext.SaveChanges();
+                dbContext.EmployeeTasks.Add(new EmployeeTask
+                {
+                    EmployeeId = empid,
+                    TaskId = taskid,
+                    Status = TaskState.New
+                });
+                dbContext.SaveChanges();
+            }
+
+          
         }
     }
      

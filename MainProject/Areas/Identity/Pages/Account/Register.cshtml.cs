@@ -77,9 +77,7 @@ namespace MainProject.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
+            public string UserName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -132,18 +130,17 @@ namespace MainProject.Areas.Identity.Pages.Account
             {
                 var user = new Employee
                 {
-                    Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    UserName = new MailAddress(Input.Email).User
+                    UserName =Input.UserName,   
                 };
 
 
                 var _Manager = await _userManager.FindByNameAsync(user.UserName);
                 if (_Manager == null)
                 {
-                    await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                    await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                    await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, Input.UserName, CancellationToken.None);
                     var result = await _userManager.CreateAsync(user, Input.Password);
                     await _userManager.AddToRolesAsync(user, new List<string>
                 {

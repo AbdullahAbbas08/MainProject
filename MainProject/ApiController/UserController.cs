@@ -53,11 +53,11 @@ namespace MainProject.Controllers
 
             if (User.IsInRole(Roles.Manager))
             {
-                Employee = Employee.Where(x => x.ManagerId == userId);
+                Employee = Employee.Include(x => x.Manager).Where(x => x.ManagerId == userId);
             }
             else if (User.IsInRole(Roles.Employee))
             {
-                Employee = Employee.Where(x => x.Id == userId);
+                Employee = Employee.Include(x=>x.Manager).Where(x => x.Id == userId);
             }
 
 

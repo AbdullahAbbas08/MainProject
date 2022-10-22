@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using BussinessLayer.Constants;
+using System.Security.Claims;
 
 namespace MainProject.Controllers
 {
@@ -82,6 +83,7 @@ namespace MainProject.Controllers
             ModelState.Remove("Employee.ImagePath");
             ModelState.Remove("Employee.Image");
             ModelState.Remove("Employee.Password");
+            ModelState.Remove("Employee.UserName");
             if (ModelState.IsValid)
             {
                 model.Employee.Image = Request.Form.Files["ImageData"];
@@ -99,8 +101,10 @@ namespace MainProject.Controllers
 
         public ActionResult Delete(string id)
         {
-
+            if (User.IsInRole(Roles.Manager))
+            {
                 uow.Employees.Delete(id);
+            }
                 return RedirectToAction("Index", "Home");
         }
 

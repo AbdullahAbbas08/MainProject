@@ -69,7 +69,7 @@ namespace MainProject.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [Display(Name ="Email Or UserName")]
+            [Display(Name ="UserName")]
             public string Email { get; set; }
 
             /// <summary>
@@ -111,9 +111,9 @@ namespace MainProject.Areas.Identity.Pages.Account
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            var username = new EmailAddressAttribute().IsValid(Input.Email)?
-                userManager1.FindByEmailAsync(Input.Email).Result.UserName
-                : Input.Email;
+            //var username = new EmailAddressAttribute().IsValid(Input.Email)?
+            //    userManager1.FindByEmailAsync(Input.Email).Result.UserName
+            //    : Input.Email;
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
