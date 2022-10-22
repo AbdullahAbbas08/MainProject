@@ -28,17 +28,18 @@ namespace MainProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateEmployeesDropdowns model)
+        public async Task<IActionResult> Create(CreateEmployeesDropdowns model)
         {
            
             ModelState.Remove("Employee.Id");
             ModelState.Remove("Employee.ImagePath");
             ModelState.Remove("Employee.Image");
-
+            ModelState.Remove("ManagerId");
             if (ModelState.IsValid)
             {
                 model.Employee.Image = Request.Form.Files["ImageData"];
-                uow.Employees.Create(model);
+            model.ManagerId = User.FindFirstValue(ClaimTypes.NameIdentifier) as string;
+                await uow.Employees.CreateAsync(model);
                 return RedirectToAction("Index","Home");
             }
             CreateEmployeesDropdowns dropdowns = uow.Employees.InitViewModel();
@@ -80,6 +81,7 @@ namespace MainProject.Controllers
             ModelState.Remove("Employee.Id");
             ModelState.Remove("Employee.ImagePath");
             ModelState.Remove("Employee.Image");
+            ModelState.Remove("Employee.Password");
             if (ModelState.IsValid)
             {
                 model.Employee.Image = Request.Form.Files["ImageData"];

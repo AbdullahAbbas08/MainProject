@@ -57,15 +57,20 @@
 </table>
 
 <div class="row col-12 col-md-4 d-flex justify-content-center">
-    </div>
-     <button class="btn btn-primary" 
+    @{
+    if (User.IsInRole(Roles.Manager))
+    {
+       <button class="btn btn-primary" 
                             data-bs-toggle="modal" 
-                            data-bs-target="#exampleModal2">Assign</button>
+                            data-bs-target="#exampleModal2">Assign</button>   
+    }
+}
 
      <button class="btn btn-primary" 
                             data-bs-toggle="modal" 
                             data-bs-target="#exampleModal">Change Status</button>
-</div>
+    </div>
+
 
 @using (Html.BeginForm("ChangeStatusForAdmin", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

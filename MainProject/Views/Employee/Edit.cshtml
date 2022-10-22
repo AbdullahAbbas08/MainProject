@@ -15,6 +15,7 @@
    
 
     <input type="hidden" asp-for="Employee.Id" id="EmployeeId" />
+    <input type="hidden" asp-for="ManagerId" id="ManagerId" />
 
     <div class="container">
         <div class="row">
@@ -32,10 +33,15 @@
                 <input asp-for="Employee.Salay" class="form-control" autocomplete="off" />
             </div>
             
-            <div class="col-12 p-3">
+             <div class="col-12 p-3">
+                <label asp-for="Employee.UserName" class="control-label"></label>
+                <input asp-for="Employee.UserName" class="form-control" autocomplete="off" disabled/>
+            </div>
+
+           @* <div class="col-12 p-3">
            <label asp-for="Managers" class="control-label"></label>
                 @Html.DropDownListFor(a=>a.ManagerId,new SelectList(Model.Managers,"Value","Text",Model.Managers.FirstOrDefault(x=>x.Selected == true)), new { @class = "form-control" })
-            </div>
+            </div>*@
             
             <div class="col-12 p-3">
            <label asp-for="Department" class="control-label"></label>
@@ -48,7 +54,7 @@
                 <input type="file"  name="ImageData" id="flupImage" onchange="ShowImagePreview(this);" class="form-control" />
             </div>
             <div class="col-12 p-3">
-                <input type="button" value="Back" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Employee")'" />
+                <input type="button" value="Back" class="btn btn-dark" onclick="location.href='@Url.Action("Index", "Home")'" />
                 <input type="submit" class="btn btn-outline-primary" value="Save" />
 
                 <a asp-action="Index" class="btn-primary btn-secondary"></a>

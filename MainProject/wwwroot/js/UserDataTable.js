@@ -31,7 +31,7 @@
             {
                 "render": function (data, type, row)
                 {
-                    return `<div class="d-flex justify-content-center"> <a class="btn btn-danger mx-2" onclick="location.href='/Employee/Delete/${row.id}'"; ><i class="fa-solid fa-trash"></i> </a > <a  onclick="location.href='/Employee/Edit/${row.id}'"; class="btn btn-primary mx-2"> <i class="fa-solid fa-pen-to-square"></i> </a ><a class="btn btn-info mx-2" onclick="location.href='/Employee/Details/${row.id}'"; >Assign</a ></div>`
+                    return `<div class="d-flex justify-content-center"> <a class="btn btn-danger mx-2" onclick="location.href='/Employee/Delete/${row.id}'"; ><i class="fa-solid fa-trash"></i> </a > <a  onclick="location.href='/Employee/Edit/${row.id}'"; class="btn btn-primary mx-2"> <i class="fa-solid fa-pen-to-square"></i> </a ><a class="btn btn-info mx-2" onclick="location.href='/Employee/Details/${row.id}'"; ><i class="fa fa-info-circle"></i></a ></div>`
                 },
                 "orderable": false
             }

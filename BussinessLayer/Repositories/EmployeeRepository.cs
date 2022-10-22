@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace BussinessLayer.Repository
 {
@@ -21,7 +22,7 @@ namespace BussinessLayer.Repository
         CreateEmployeesDropdowns InitViewModel(); 
         CreateEmployeesDropdowns Edit(string? ID);
         Insert_Update_EmployeeDto Edit(CreateEmployeesDropdowns model);
-        void Create(CreateEmployeesDropdowns model);
+        System.Threading.Tasks.Task CreateAsync(CreateEmployeesDropdowns model);
 
         void Delete(string id);
 
@@ -167,7 +168,6 @@ namespace BussinessLayer.Repository
                 res.FirstName = model.Employee.FirstName;
                 res.LastName = model.Employee.LastName;
 
-
                 uow.SaveChanges();
             }
             return model.Employee;
@@ -195,18 +195,39 @@ namespace BussinessLayer.Repository
             }
         }
 
-        public void Create(CreateEmployeesDropdowns model)
+        public async System.Threading.Tasks.Task CreateAsync(CreateEmployeesDropdowns model)
         {
-            if (model.Employee.Image != null)
-                model.Employee.ImagePath = uow.helper.UploadImage(model.Employee.Image, $"{uow.WebRootPath}\\images\\");
+            try
+            {
+                if (model.Employee.Image != null)
+                    model.Employee.ImagePath = uow.helper.UploadImage(model.Employee.Image, $"{uow.WebRootPath}\\images\\");
 
-            Employee employeeData = uow.Mapper.Map<Employee>(model.Employee);
-            employeeData.Id = Guid.NewGuid().ToString();
-            employeeData.DepartmentId =int.Parse(model.DepartmentId);
-            employeeData.ManagerId = model.ManagerId=="0"?null: model.ManagerId;
-            employeeData.UserName = employeeData.FullName;
-            uow.Employees.Add(employeeData);
-            uow.SaveChanges();
+                var employee = new Employee
+                {
+                    UserName = model.Employee.UserName,
+                    FirstName = model.Employee.FirstName,
+                    LastName = model.Employee.LastName,
+                    Salay = model.Employee.Salay,
+                    ImagePath = model.Employee.ImagePath,
+                    ManagerId = model.ManagerId
+                };
+
+                var _Manager = await uow.userManager.FindByNameAsync(model.Employee.UserName);
+                if (_Manager == null)
+                {
+                    await uow.userManager.CreateAsync(employee, model.Employee.Password);
+                    await uow.userManager.AddToRolesAsync(employee, new List<string>
+                {
+                    Roles.Employee
+                });
+                }
+                uow.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+
+            }
+           
         }
 
         public Employee GetEmployee(string userId)
