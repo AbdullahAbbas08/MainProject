@@ -39,7 +39,7 @@ namespace MainProject.Controllers
             if (ModelState.IsValid)
             {
                 model.Employee.Image = Request.Form.Files["ImageData"];
-            model.ManagerId = User.FindFirstValue(ClaimTypes.NameIdentifier) as string;
+            model.ManagerId =model.ManagerId == null? User.FindFirstValue(ClaimTypes.NameIdentifier) as string: model.ManagerId;
                 await uow.Employees.CreateAsync(model);
                 return RedirectToAction("Index","Home");
             }
@@ -84,8 +84,10 @@ namespace MainProject.Controllers
             ModelState.Remove("Employee.Image");
             ModelState.Remove("Employee.Password");
             ModelState.Remove("Employee.UserName");
+            ModelState.Remove("ManagerId");
             if (ModelState.IsValid)
             {
+
                 model.Employee.Image = Request.Form.Files["ImageData"];
                 uow.Employees.Edit(model);
                 return RedirectToAction("Index", "Home");
@@ -101,7 +103,7 @@ namespace MainProject.Controllers
 
         public ActionResult Delete(string id)
         {
-            if (User.IsInRole(Roles.Manager))
+            if (User.IsInRole(Roles.Manager) || User.IsInRole(Roles.SuperAdmin))
             {
                 uow.Employees.Delete(id);
             }

@@ -36,10 +36,14 @@
                 <input asp-for="Employee.Password" type="password" class="form-control" autocomplete="off" />
             </div>
             
-          @*  <div class="col-12 p-3">
+                @if(User.IsInRole(Roles.SuperAdmin)){
+                       <div class="col-12 p-3">
            <label asp-for="Managers" class="control-label"></label>
                 @Html.DropDownListFor(a=>a.ManagerId,new SelectList(Model.Managers,"Value","Text"), new { @class = "form-control" })
-            </div>*@
+            </div>
+                }
+            
+          
             
             <div class="col-12 p-3">
            <label asp-for="Department" class="control-label"></label>

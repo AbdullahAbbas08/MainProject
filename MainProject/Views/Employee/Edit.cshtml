@@ -38,10 +38,13 @@
                 <input asp-for="Employee.UserName" class="form-control" autocomplete="off" disabled/>
             </div>
 
-           @* <div class="col-12 p-3">
+                @if(User.IsInRole(Roles.SuperAdmin)){
+                       <div class="col-12 p-3">
            <label asp-for="Managers" class="control-label"></label>
-                @Html.DropDownListFor(a=>a.ManagerId,new SelectList(Model.Managers,"Value","Text",Model.Managers.FirstOrDefault(x=>x.Selected == true)), new { @class = "form-control" })
-            </div>*@
+                @Html.DropDownListFor(a=>a.Employee.ManagerId,new SelectList(Model.Managers,"Value","Text"), new { @class = "form-control" })
+            </div>
+                }
+              
             
             <div class="col-12 p-3">
            <label asp-for="Department" class="control-label"></label>

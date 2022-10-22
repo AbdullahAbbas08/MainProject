@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BussinessLayer.Repository
 {
@@ -118,7 +119,7 @@ namespace BussinessLayer.Repository
         public CreateEmployeesDropdowns Edit(string? ID)
         {
             CreateEmployeesDropdowns dropdowns = InitViewModel();
-            Employee data = dbContext.Employees?.FirstOrDefault(x => x.Id == ID);
+            Employee data = dbContext.Employees?.Include(x=>x.Manager).FirstOrDefault(x => x.Id == ID);
 
             for (int i = 0; i < dropdowns.Managers.Count(); i++)
             {
@@ -162,7 +163,9 @@ namespace BussinessLayer.Repository
                     model.Employee.ImagePath = res.ImagePath;
 
                 if (model.DepartmentId != null) res.DepartmentId = int.Parse(model.DepartmentId);
-                if (model.ManagerId != null && model.ManagerId != "0") res.ManagerId = model.ManagerId; else res.ManagerId = null;
+
+                if (model.Employee.ManagerId != null && model.Employee.ManagerId != "0")
+                    res.ManagerId = model.Employee.ManagerId; else res.ManagerId = null;
 
                 res.Salay = model.Employee.Salay;
                 res.FirstName = model.Employee.FirstName;
@@ -235,7 +238,7 @@ namespace BussinessLayer.Repository
         public Employee GetEmployee(string userId)
         {
             Employee returnedEmployee = new();
-            var employee = uow.Employees.Where(x => x.Id == userId).ToList();
+            var employee = dbContext.Employees.Include(x=>x.Manager).Where(x => x.Id == userId).ToList();
             var tasks = uow.Tasks.GetAllTasks();
             var employeeTasks = dbContext.EmployeeTasks.ToList();
 

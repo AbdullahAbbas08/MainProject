@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="row">
-                @if (User.IsInRole(Roles.Manager))
+                @if (User.IsInRole(Roles.Manager) || User.IsInRole(Roles.SuperAdmin))
                 {
                     
                 <div class="col-12 my-3">

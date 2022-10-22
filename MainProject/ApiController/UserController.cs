@@ -59,11 +59,18 @@ namespace MainProject.Controllers
             {
                 Employee = Employee.Include(x=>x.Manager).Where(x => x.Id == userId);
             }
+            else if (User.IsInRole(Roles.SuperAdmin))
+            {
+                Employee = Employee.Include(x => x.Manager);
+            }
+            else
+            {
+
+            }
 
 
             var QueryResult = Employee.Skip(skip).Take(pageSize).ToList();
-            
-           
+     
             var data = mapper.Map<List<EmployeeDataDto>>(QueryResult);
 
             var recordsTotal = Employee.Count();
